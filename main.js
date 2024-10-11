@@ -47,7 +47,7 @@ function writeData(res, data) {
         let t = 1;
         const i = setInterval(() => {
             // Have the type-writer effect when you write each letter individually.
-            res.write(data.substring(t, t + 1));
+            res.write(data.charAt(t));
             t++;
             if (t === lorem.length - 1) {
                 clearInterval(i);
