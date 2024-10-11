@@ -26,13 +26,11 @@ server.on("request", (req, res) => {
     if (req.method === "GET" && req.url === "/") {
         res.write(htmlPage);
         return res.end();
-    }
-    else if (req.method === "GET" && req.url === "/api/data") {
+    } else if (req.method === "GET" && req.url === "/api/data") {
         // Set header as text.
         res.writeHead(200, "ok", { "Content-Type": "text/html" })
         // Start on writing the response to the client.
         writeData(res, lorem)
-            .then((data) => { console.log(data) })
             // End it whenever, success or fail.
             .finally(() => res.end());
     } else {
@@ -51,10 +49,9 @@ function writeData(res, data) {
             t++;
             if (t === lorem.length - 1) {
                 clearInterval(i);
-                resolve("end");
+                resolve();
             }
         }, 5);
-
     });
 }
 

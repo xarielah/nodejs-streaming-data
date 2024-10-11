@@ -111,9 +111,9 @@
 
         function resetButton() {
             const button = document.querySelector('.button.stream');
-            button.textContent = 'Start Streaming!';
-            button.disabled = false;
+            button.hidden = false;
             placeHolderHidden = false;
+            stopButton.hidden = true;
         }
 
         // Streaming functions
