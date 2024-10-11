@@ -52,6 +52,10 @@
             opacity: 0.75;
         }
 
+        .stop {
+            background-color: #a00000;
+        }
+
         * {
             font-family: "Fira Sans Condensed", sans-serif;
             font-weight: 400;
@@ -71,31 +75,38 @@
         <h1>Streaming Data Example</h1>
     </header>
 
-    <pre class="data-container container">
+    <p class="data-container container">
         Streamed data will appear here!
-    </pre>
+    </p>
 
     <div>
         <button class="button stream" onclick="startStreaming()">Start Streaming!</button>
+        <button class="button stop" hidden onclick="stopStreaming()">Stop Streaming</button>
     </div>
     <script>
-        // Flags and DOM elements
+        // Globals
+        let abortController = new AbortController();
         let placeHolderHidden = false;
         const dataContainer = document.querySelector('.data-container');
+        const stopButton = document.querySelector('.button.stop');
+        const button = document.querySelector('.button.stream');
+
 
         // DOM manipulation functions
-        function updateStreamedParagraph(data) {
+        function resetText() {
             if (placeHolderHidden === false) {
                 dataContainer.textContent = '';
                 placeHolderHidden = true;
             }
+        }
+
+        function updateStreamedParagraph(data) {
+            resetText();
             dataContainer.textContent += data;
         }
 
         function disableButton() {
-            const button = document.querySelector('.button.stream');
-            button.textContent = 'Streaming...';
-            button.disabled = true;
+            button.hidden = true;
         }
 
         function resetButton() {
@@ -112,11 +123,22 @@
         function startStreaming() {
             disableButton();
             getStreamedData();
+            stopButton.hidden = false;
+        }
+
+        function stopStreaming() {
+            placeHolderHidden = false;
+            abortController.abort("Streaming was aborted by the user.");
+            abortController = new AbortController();
+            stopButton.hidden = true;
+            button.hidden = false;
         }
 
         async function getStreamedData() {
             try {
-                const response = await fetch(URL);
+                const response = await fetch(URL, {
+                    signal: abortController.signal
+                });
 
                 const reader = response.body.getReader();
                 const stream = new ReadableStream({
@@ -139,6 +161,7 @@
 
                 return new Response(stream);
             } catch (error) {
+                console.log("🚀 ~ getStreamedData ~ error:", error)
                 console.error(error);
             }
         }

@@ -1,7 +1,6 @@
 const http = require("http");
 const server = http.createServer();
 const fs = require('fs');
-
 const lorem = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
@@ -33,6 +32,7 @@ server.on("request", (req, res) => {
         res.writeHead(200, "ok", { "Content-Type": "text/html" })
         // Start on writing the response to the client.
         writeData(res, lorem)
+            .then((data) => { console.log(data) })
             // End it whenever, success or fail.
             .finally(() => res.end());
     } else {
@@ -51,7 +51,7 @@ function writeData(res, data) {
             t++;
             if (t === lorem.length - 1) {
                 clearInterval(i);
-                resolve();
+                resolve("end");
             }
         }, 5);
 
