@@ -20,6 +20,10 @@
             color: #f0f0f0;
         }
 
+        main>* {
+            margin-top: 1em;
+        }
+
         .container {
             border-radius: 20px;
             background-color: #1f1f1f50;
@@ -75,14 +79,17 @@
         <h1>Streaming Data Example</h1>
     </header>
 
-    <p class="data-container container">
-        Streamed data will appear here!
-    </p>
+    <main>
+        <div>
+            <button class="button stream" onclick="startStreaming()">Start Streaming!</button>
+            <button class="button stop" hidden onclick="stopStreaming()">Stop Streaming</button>
+        </div>
 
-    <div>
-        <button class="button stream" onclick="startStreaming()">Start Streaming!</button>
-        <button class="button stop" hidden onclick="stopStreaming()">Stop Streaming</button>
-    </div>
+        <p class="data-container container">
+            Streamed data will appear here!
+        </p>
+    </main>
+
     <script>
         // Globals
         let abortController = new AbortController();
