@@ -24,11 +24,11 @@ const htmlPage = fs.readFileSync(__dirname + "/static/index.html");
 // Listen to incoming requests.
 server.on("request", (req, res) => {
     if (req.method === "GET" && req.url === "/") {
-        res.write(htmlPage);
-        return res.end();
+        res.writeHead(200, { "Content-Type": "text/html" });
+        return res.end(htmlPage);
     } else if (req.method === "GET" && req.url === "/api/data") {
         // Set header as text.
-        res.writeHead(200, "ok", { "Content-Type": "text/html" })
+        res.writeHead(200, "ok", { "Content-Type": "text/plain" })
         // Start on writing the response to the client.
         writeData(res, lorem)
             // End it whenever, success or fail.
@@ -58,3 +58,6 @@ function writeData(res, data) {
 server.listen(process.env.PORT || 6969, function () {
     console.log("Server is RUNNING...");
 })
+
+
+// IIFE = Immedietly invoked function expression
